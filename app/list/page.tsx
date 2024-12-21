@@ -20,15 +20,15 @@ export default function PatientList() {
       setIsLoading(true);
       try {
         let results = await (searchQuery ? searchPatients(searchQuery) : filterPatients(filterCriteria));
-        
+      
         // Apply date filtering if dates are selected
         if (startDate && endDate) {
           results = results.filter(patient => {
-            const patientDate = new Date(patient.createdAt);
-            return patientDate >= new Date(startDate) && patientDate <= new Date(endDate);
+            const patientDate = new Date(patient.createdAt).toISOString().split('T')[0];
+            return patientDate >= startDate && patientDate <= endDate;
           });
         }
-        
+      
         setPatients(results);
       } catch (error) {
         console.error('Error fetching patients:', error);
@@ -43,7 +43,9 @@ export default function PatientList() {
     if (window.confirm('Are you sure you want to delete this patient record?')) {
       try {
         await deletePatient(patientId);
-        setPatients(patients.filter(p => p.id !== patientId));
+        // Fetch the updated list of patients after deletion
+        const updatedPatients = await getPatients();
+        setPatients(updatedPatients);
       } catch (error) {
         console.error('Error deleting patient:', error);
       }
@@ -93,6 +95,7 @@ export default function PatientList() {
             <th className="p-4 text-left font-bold text-gray-900">TRO</th>
             <th className="p-4 text-left font-bold text-gray-900">Tooth #</th>
             <th className="p-4 text-left font-bold text-gray-900">Payment</th>
+            <th className="p-4 text-left font-bold text-gray-900">Date</th>
             <th className="p-4 text-left font-bold text-gray-900">Actions</th>
           </tr>
         </thead>
@@ -117,6 +120,7 @@ export default function PatientList() {
               <td className="p-4 text-gray-700">{patient.tro || 'N/A'}</td>
               <td className="p-4 text-gray-700">{patient.toothNumber || 'N/A'}</td>
               <td className="p-4 font-medium text-gray-900">${patient.payment ? patient.payment.toFixed(2) : '0.00'}</td>
+              <td className="p-4 text-gray-700">{new Date(patient.createdAt).toLocaleDateString()}</td>
               <td className="p-4">
                 <button
                   onClick={() => handleDelete(patient.id)}
@@ -199,6 +203,10 @@ export default function PatientList() {
               <div>
                 <p className="text-sm font-medium text-gray-500">Payment</p>
                 <p className="mt-1 text-sm font-medium text-gray-900">${patient.payment ? patient.payment.toFixed(2) : '0.00'}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Date</p>
+                <p className="mt-1 text-sm text-gray-900">{new Date(patient.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
           </div>

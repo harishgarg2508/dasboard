@@ -1,0 +1,15 @@
+{
+  "name": "Narayan",
+  "age": 500,
+  "gender": "Male",
+  "isNewPatient": true,
+  "phoneNumber": "7894561236",
+  "diagnosis": "wertyui",
+  "treatmentPlan": "asdfghjk",
+  "tro": "7894",
+  "toothNumber": "56",
+  "payment": 36,
+  "entryDate": "2024-12-20",
+  "id": "1734711324394",
+  "createdAt": "2024-12-20T16:15:24.394Z"
+}

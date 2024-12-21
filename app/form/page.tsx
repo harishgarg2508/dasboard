@@ -15,6 +15,7 @@ interface PatientFormData {
   toothNumber: string;
   isNewPatient: string;
   payment: string;
+  entryDate: string;
 }
 
 export default function PatientForm() {
@@ -31,6 +32,7 @@ export default function PatientForm() {
     toothNumber: '',
     isNewPatient: 'true',
     payment: '',
+    entryDate: new Date().toISOString().split('T')[0],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -44,7 +46,7 @@ export default function PatientForm() {
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!formData.name && !!formData.age && !!formData.gender && !!formData.phoneNumber;
+        return !!formData.name && !!formData.age && !!formData.gender && !!formData.phoneNumber && !!formData.entryDate;
       case 2:
         return !!formData.diagnosis && !!formData.treatmentPlan && !!formData.tro && !!formData.toothNumber;
       case 3:
@@ -86,6 +88,7 @@ export default function PatientForm() {
       tro: formData.tro,
       toothNumber: formData.toothNumber,
       payment: parseFloat(formData.payment),
+      entryDate: formData.entryDate, // Include entry date in the submission
     };
 
     console.log('Submitting patient data:', patient);
@@ -103,6 +106,7 @@ export default function PatientForm() {
         toothNumber: '',
         isNewPatient: 'true',
         payment: '',
+        entryDate: new Date().toISOString().split('T')[0], // Reset to current date
       });
       setCurrentStep(1);
     } catch (error) {
@@ -150,6 +154,21 @@ export default function PatientForm() {
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-6"
               >
+                {/* Entry Date Field */}
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Entry Date</label>
+                    <input
+                      type="date"
+                      name="entryDate"
+                      value={formData.entryDate}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
+                    />
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Name</label>
@@ -185,7 +204,7 @@ export default function PatientForm() {
                       value={formData.gender}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border text-black border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
                     >
                       <option value="">Select gender</option>
                       <option value="Male">Male</option>
@@ -284,7 +303,7 @@ export default function PatientForm() {
                       value={formData.isNewPatient}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border text-black border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
                     >
                       <option value="true">New</option>
                       <option value="false">Old</option>
@@ -348,4 +367,3 @@ export default function PatientForm() {
     </div>
   );
 }
-

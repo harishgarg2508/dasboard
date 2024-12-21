@@ -1,37 +1,64 @@
 import { Patient, FilterCriteria } from './types';
 
-const STORAGE_KEY = 'patients';
-
-export const getPatients = (): Patient[] => {
-  if (typeof window === 'undefined') {
-    return []; // Return empty array on server-side
+export const getPatients = async (): Promise<Patient[]> => {
+  try {
+    const response = await fetch('/api/patients');
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return data.patients;
+  } catch (error) {
+    console.error('Error fetching patients:', error);
+    return [];
   }
-  const patients = localStorage.getItem(STORAGE_KEY);
-  return patients ? JSON.parse(patients) : [];
 };
 
-export const savePatient = (patient: Patient): void => {
-  if (typeof window === 'undefined') return; // Don't save on server-side
-  const patients = getPatients();
-  const newPatient = { 
-    ...patient, 
-    id: Date.now().toString(), 
-    createdAt: new Date().toISOString() 
-  };
-  patients.push(newPatient);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+export const savePatient = async (patient: Patient): Promise<void> => {
+  try {
+    const response = await fetch('/api/patients', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(patient),
+    });
+    
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+  } catch (error) {
+    console.error('Error saving patient:', error);
+    throw new Error('Failed to save patient data');
+  }
 };
 
-export const searchPatients = (query: string): Patient[] => {
-  const patients = getPatients();
+export const deletePatient = async (patientId: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`/api/patients/${patientId}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      console.error(`Failed to delete patient. Status: ${response.status}`);
+      return false;
+    }
+    
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error('Error deleting patient:', error);
+    return false;
+  }
+};
+
+export const searchPatients = async (query: string): Promise<Patient[]> => {
+  const patients = await getPatients();
   return patients.filter(patient => 
     patient.name.toLowerCase().includes(query.toLowerCase()) ||
     patient.phoneNumber.includes(query)
   );
 };
 
-export const filterPatients = (criteria: FilterCriteria): Patient[] => {
-  const patients = getPatients();
+export const filterPatients = async (criteria: FilterCriteria): Promise<Patient[]> => {
+  const patients = await getPatients();
   switch (criteria) {
     case 'new':
       return patients.filter(patient => patient.isNewPatient);
@@ -42,12 +69,5 @@ export const filterPatients = (criteria: FilterCriteria): Patient[] => {
     default:
       return patients;
   }
-};
-
-export const deletePatient = (id: string): void => {
-  if (typeof window === 'undefined') return; // Don't delete on server-side
-  const patients = getPatients();
-  const updatedPatients = patients.filter(patient => patient.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPatients));
 };
 

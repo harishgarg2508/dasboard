@@ -1,0 +1,47 @@
+[
+  {
+    "name": "aayush",
+    "age": 23,
+    "gender": "Male",
+    "isNewPatient": true,
+    "phoneNumber": "64532963253",
+    "diagnosis": "tdjfkguhjk",
+    "treatmentPlan": "zfdhghjbk",
+    "tro": "653",
+    "toothNumber": "2410",
+    "payment": 532,
+    "entryDate": "2024-12-20",
+    "id": "1734714944705",
+    "createdAt": "2024-12-20T17:15:44.705Z"
+  },
+  {
+    "name": "edfggf",
+    "age": 4,
+    "gender": "Female",
+    "isNewPatient": true,
+    "phoneNumber": "hgf5",
+    "diagnosis": "dgjhg",
+    "treatmentPlan": "yjyh",
+    "tro": "yf",
+    "toothNumber": "yr",
+    "payment": 474,
+    "entryDate": "2024-12-20",
+    "id": "1734715218530",
+    "createdAt": "2024-12-20T17:20:18.531Z"
+  },
+  {
+    "name": "Rishu",
+    "age": 89,
+    "gender": "Male",
+    "isNewPatient": true,
+    "phoneNumber": "565+9562+9562",
+    "diagnosis": "cgfhjbk",
+    "treatmentPlan": "vhjbkn.",
+    "tro": "74521",
+    "toothNumber": "523",
+    "payment": 7,
+    "entryDate": "2024-12-21",
+    "id": "1734779965129",
+    "createdAt": "2024-12-21T11:19:25.129Z"
+  }
+]

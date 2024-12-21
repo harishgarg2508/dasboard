@@ -1,0 +1,15 @@
+{
+  "name": "Rishu",
+  "age": 89,
+  "gender": "Male",
+  "isNewPatient": true,
+  "phoneNumber": "565+9562+9562",
+  "diagnosis": "cgfhjbk",
+  "treatmentPlan": "vhjbkn.",
+  "tro": "74521",
+  "toothNumber": "523",
+  "payment": 7,
+  "entryDate": "2024-12-21",
+  "id": "1734779965129",
+  "createdAt": "2024-12-21T11:19:25.129Z"
+}
