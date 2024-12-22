@@ -15,6 +15,7 @@ interface PatientFormData {
   toothNumber: string;
   isNewPatient: string;
   payment: string;
+  paidAmount: string;
   entryDate: string;
 }
 
@@ -32,6 +33,7 @@ export default function PatientForm() {
     toothNumber: '',
     isNewPatient: 'true',
     payment: '',
+    paidAmount: '',
     entryDate: new Date().toISOString().split('T')[0],
   });
 
@@ -50,10 +52,16 @@ export default function PatientForm() {
       case 2:
         return !!formData.diagnosis && !!formData.treatmentPlan && !!formData.tro && !!formData.toothNumber;
       case 3:
-        return !!formData.isNewPatient && !!formData.payment;
+        return !!formData.isNewPatient && !!formData.payment && !!formData.paidAmount;
       default:
         return false;
     }
+  };
+
+  const calculateRemainingBalance = () => {
+    const totalAmount = parseFloat(formData.payment) || 0;
+    const paidAmount = parseFloat(formData.paidAmount) || 0;
+    return totalAmount - paidAmount;
   };
 
   const handleNext = () => {
@@ -88,13 +96,14 @@ export default function PatientForm() {
       tro: formData.tro,
       toothNumber: formData.toothNumber,
       payment: parseFloat(formData.payment),
-      entryDate: formData.entryDate, // Include entry date in the submission
+      paidAmount: parseFloat(formData.paidAmount),
+      remainingBalance: calculateRemainingBalance(),
+      paymentStatus: calculateRemainingBalance() > 0 ? 'UNPAID' : 'PAID',
+      entryDate: formData.entryDate,
     };
 
-    console.log('Submitting patient data:', patient);
     try {
       await savePatient(patient);
-      console.log('Patient saved successfully:', patient);
       setFormData({
         name: '',
         age: '',
@@ -106,7 +115,8 @@ export default function PatientForm() {
         toothNumber: '',
         isNewPatient: 'true',
         payment: '',
-        entryDate: new Date().toISOString().split('T')[0], // Reset to current date
+        paidAmount: '',
+        entryDate: new Date().toISOString().split('T')[0],
       });
       setCurrentStep(1);
     } catch (error) {
@@ -115,6 +125,8 @@ export default function PatientForm() {
       setIsSubmitting(false);
     }
   };
+
+  const remainingBalance = calculateRemainingBalance();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
@@ -154,7 +166,6 @@ export default function PatientForm() {
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-6"
               >
-                {/* Entry Date Field */}
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Entry Date</label>
@@ -310,7 +321,7 @@ export default function PatientForm() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Amount</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Total Amount</label>
                     <input
                       type="number"
                       name="payment"
@@ -319,9 +330,41 @@ export default function PatientForm() {
                       step="0.01"
                       required
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
-                      placeholder="Enter payment amount"
+                      placeholder="Enter total amount"
                     />
                   </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Paid Amount</label>
+                    <input
+                      type="number"
+                      name="paidAmount"
+                      value={formData.paidAmount}
+                      onChange={handleInputChange}
+                      step="0.01"
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-black"
+                      placeholder="Enter paid amount"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Remaining Balance</label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={remainingBalance.toFixed(2)}
+                        readOnly
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-black"
+                      />
+                      {remainingBalance > 0 && (
+                        <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                          UNPAID
+                        </span>
+                      )}
+                    </div>
+                    </div>
                 </div>
               </motion.div>
             )}
