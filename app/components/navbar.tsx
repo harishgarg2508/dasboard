@@ -22,7 +22,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <span className="text-xl font-semibold text-gray-800">
-            Dental Practice
+           Data Entry
           </span>
           
           {/* Mobile menu button */}
