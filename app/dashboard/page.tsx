@@ -110,7 +110,7 @@ export default function DashboardPage() {
             <CardContent>
               <p>Total Patients: {patients.length}</p>
               <p>New Patients: {patients.filter(p => new Date(p.entryDate).getMonth() === new Date().getMonth()).length}</p>
-              <p>Total Revenue: ${patients.reduce((sum, p) => sum + p.payment, 0).toFixed(2)}</p>
+              <p>Total Revenue: ₹{patients.reduce((sum, p) => sum + p.payment, 0).toFixed(2)}</p>
             </CardContent>
           </Card>
         </TabsContent>
