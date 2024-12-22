@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
-import { Users, UserPlus, DollarSign, Activity } from 'lucide-react'
+import { Users, UserPlus, IndianRupee, Activity } from 'lucide-react'
 
 export function PatientStats({ patients }) {
   const totalPatients = patients.length
@@ -34,7 +34,7 @@ export function PatientStats({ patients }) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <IndianRupee className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
