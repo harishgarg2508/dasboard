@@ -12,16 +12,18 @@ interface FilterBarProps {
   };
   onSearchChange: (value: string) => void;
   onFilterChange: (name: string, value: string) => void;
+  onResetFilters: () => void;
 }
 
 export default function FilterBar({
   searchTerm,
   filters,
   onSearchChange,
-  onFilterChange
+  onFilterChange,
+  onResetFilters,
 }: FilterBarProps) {
   return (
-    <div className="grid grid-cols-1 text-black md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+    <div className="grid grid-cols-1 text-black md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <div className="relative">
         <Search className="absolute left-3 top-3 text-black" size={20} />
         <input
@@ -80,6 +82,13 @@ export default function FilterBar({
         onChange={(e) => onFilterChange('endDate', e.target.value)}
         placeholder="End Date"
       />
+
+      <button
+        onClick={onResetFilters}
+        className="px-4 py-2 bg-gray-200 text-black rounded-xl border focus:ring-2 focus:ring-red-400"
+      >
+        Reset Filters
+      </button>
     </div>
   );
 }

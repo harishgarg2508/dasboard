@@ -129,6 +129,21 @@ export default function PatientList() {
       prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
     );
   };
+  const onResetFilters = async () => {
+    setSearchTerm('');
+    setFilters({
+      ageRange: '',
+      paymentStatus: '',
+      patientType: '',
+      startDate: '',
+      endDate: '',
+    });
+    // Fetch all patients again after resetting filters
+    const allPatients = await getPatients();
+    setPatients(allPatients);
+    setFilteredPatients(allPatients);
+  };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
@@ -147,6 +162,7 @@ export default function PatientList() {
               filters={filters}
               onSearchChange={handleSearch}
               onFilterChange={handleFilterChange}
+              onResetFilters={onResetFilters}
             />
 
             {selectedPatients.length > 0 && (
