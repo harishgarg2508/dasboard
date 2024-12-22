@@ -31,6 +31,7 @@ export default function PatientTable({
               className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
           </th>
+          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">SNo.</th>
           <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Name</th>
           <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">New/Old</th>
           <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Age</th>
@@ -45,9 +46,9 @@ export default function PatientTable({
           <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Balance</th>
           <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
         </tr>
-      </thead>
+        </thead>
       <tbody>
-        {patients.map((patient) => (
+        {patients.map((patient, index) => (
           <tr key={patient.id} className="border-b border-gray-200 hover:bg-gray-50">
             <td className="px-4 py-3">
               <input
@@ -57,6 +58,7 @@ export default function PatientTable({
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
             </td>
+            <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
             <td className="px-4 py-3 text-sm font-medium text-gray-900">{patient.name}</td>
             <td className="px-4 py-3 text-sm font-medium text-gray-900">{patient.isNewPatient ? 'New' : 'Old'}</td>
             <td className="px-4 py-3 text-sm text-gray-900">{patient.age}</td>
@@ -77,7 +79,7 @@ export default function PatientTable({
               </span>
             </td>
             <td className="px-4 py-3 text-sm text-gray-900">
-              ${patient.remainingBalance.toFixed(2)}
+            ₹{patient.remainingBalance.toFixed(2)}
             </td>
             <td className="px-4 py-3">
               <div className="flex gap-2">
