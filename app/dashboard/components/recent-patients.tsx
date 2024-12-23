@@ -17,7 +17,7 @@ export function RecentPatients({ patients }) {
             </p>
           </div>
           <div className="ml-auto font-medium">
-            ${patient.payment.toFixed(2)}
+          ₹{patient.payment.toFixed(2)}
           </div>
         </div>
       ))}
