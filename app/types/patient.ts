@@ -14,4 +14,5 @@ export interface Patient {
   remainingBalance: number;
   paymentStatus: 'PAID' | 'UNPAID';
   entryDate: string;
+  serialNumber?: number; 
 }
