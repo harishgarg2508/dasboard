@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
-import { Users, UserPlus, IndianRupee, Activity } from 'lucide-react'
+import { Users, UserPlus, UserMinus, IndianRupee, Activity } from 'lucide-react'
 
 export function PatientStats({ patients }) {
   const totalPatients = patients.length
   const newPatients = patients.filter(p => p.isNewPatient).length
+  const oldPatients = totalPatients - newPatients
   const totalRevenue = patients.reduce((sum, p) => sum + p.payment, 0)
   const averageAge = patients.reduce((sum, p) => sum + p.age, 0) / totalPatients
 
@@ -23,14 +24,15 @@ export function PatientStats({ patients }) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
-            New Patients
+            New / Old
           </CardTitle>
           <UserPlus className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{newPatients}</div>
+          <div className="text-2xl font-bold">{newPatients} / {oldPatients}</div>
         </CardContent>
       </Card>
+    
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
